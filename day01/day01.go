@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-	topElfPosition := 0
 	topElfCalories := 0
 
 	file, err := os.Open(os.Args[1])
@@ -22,17 +21,15 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 
-	position := 1
 	calories := 0
 
 	for scanner.Scan() {
 		text := scanner.Text()
 		if text == "" {
 			if calories > topElfCalories {
-				topElfPosition = position
 				topElfCalories = calories
 			}
-			position++
+
 			calories = 0
 		} else {
 			number, err := strconv.Atoi(text)
@@ -49,9 +46,8 @@ func main() {
 	}
 
 	if calories > topElfCalories {
-		topElfPosition = position
 		topElfCalories = calories
 	}
 
-	fmt.Printf("Elf #%d is carrying the most with %d calories in total", topElfPosition, topElfCalories)
+	fmt.Printf("The most calories carried by an elf are %d calories", topElfCalories)
 }
