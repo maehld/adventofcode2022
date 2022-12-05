@@ -8,9 +8,10 @@ import (
 	"os"
 	"strconv"
 )
+import "sort"
 
 func main() {
-	topElfCalories := 0
+	caloriesSums := make([]int, 0)
 
 	file, err := os.Open(os.Args[1])
 	if err != nil {
@@ -26,10 +27,7 @@ func main() {
 	for scanner.Scan() {
 		text := scanner.Text()
 		if text == "" {
-			if calories > topElfCalories {
-				topElfCalories = calories
-			}
-
+			caloriesSums = append(caloriesSums, calories)
 			calories = 0
 		} else {
 			number, err := strconv.Atoi(text)
@@ -45,9 +43,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if calories > topElfCalories {
-		topElfCalories = calories
+	sort.Ints(caloriesSums)
+
+	n := 3
+	topNCalories := 0
+	for _, caloriesSum := range caloriesSums[len(caloriesSums)-3:] {
+		topNCalories += caloriesSum
 	}
 
-	fmt.Printf("The most calories carried by an elf are %d calories", topElfCalories)
+	fmt.Printf("The most calories carried by the top %d elves are %d calories", n, topNCalories)
 }
