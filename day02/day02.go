@@ -8,94 +8,80 @@ import (
 	"os"
 )
 
-type shape string
+type Shape int
 
 const (
-	rock     = "Rock"
-	paper    = "Paper"
-	scissors = "Scissors"
+	Rock     = 1
+	Paper    = 2
+	Scissors = 3
 )
 
-func score(opponentShape shape, youShape shape) int {
-	if opponentShape == rock {
-		if youShape == rock {
-			return 3 + 1
-		} else if youShape == paper {
-			return 6 + 2
-		} else if youShape == scissors {
-			return 0 + 3
-		}
-	} else if opponentShape == paper {
-		if youShape == rock {
-			return 0 + 1
-		} else if youShape == paper {
-			return 3 + 2
-		} else if youShape == scissors {
-			return 6 + 3
-		}
-	} else if opponentShape == scissors {
-		if youShape == rock {
-			return 6 + 1
-		} else if youShape == paper {
-			return 0 + 2
-		} else if youShape == scissors {
-			return 3 + 3
-		}
+func score(you Shape, opponent Shape) int {
+	score := int(you)
+
+	if you == opponent {
+		score += 3
+	} else if you == Rock && opponent == Scissors {
+		score += 6
+	} else if you == Paper && opponent == Rock {
+		score += 6
+	} else if you == Scissors && opponent == Paper {
+		score += 6
 	}
 
-	panic("invalid shape combination")
+	return score
 }
 
-func parseShapesUsingPart1Rules(text string) (opponentShape shape, youShape shape) {
+func parseShapesUsingPart1Rules(text string) (you Shape, opponent Shape) {
 	if text[0] == 'A' {
-		opponentShape = rock
+		opponent = Rock
 	} else if text[0] == 'B' {
-		opponentShape = paper
+		opponent = Paper
 	} else {
-		opponentShape = scissors
+		opponent = Scissors
 	}
 
 	if text[2] == 'X' {
-		youShape = rock
+		you = Rock
 	} else if text[2] == 'Y' {
-		youShape = paper
+		you = Paper
 	} else {
-		youShape = scissors
+		you = Scissors
 	}
 
-	return opponentShape, youShape
+	return you, opponent
 }
 
-func parseShapesUsingPart2Rules(text string) (opponentShape shape, youShape shape) {
+func parseShapesUsingPart2Rules(text string) (you Shape, opponent Shape) {
 	if text[0] == 'A' {
-		opponentShape = rock
+		opponent = Rock
 	} else if text[0] == 'B' {
-		opponentShape = paper
+		opponent = Paper
 	} else {
-		opponentShape = scissors
+		opponent = Scissors
 	}
 
 	if text[2] == 'X' {
-		if opponentShape == rock {
-			youShape = scissors
-		} else if opponentShape == paper {
-			youShape = rock
+		if opponent == Rock {
+			you = Scissors
+		} else if opponent == Paper {
+			you = Rock
 		} else {
-			youShape = paper
+			you = Paper
 		}
 	} else if text[2] == 'Y' {
-		youShape = opponentShape
+		you = opponent
 	} else {
-		if opponentShape == rock {
-			youShape = paper
-		} else if opponentShape == paper {
-			youShape = scissors
+		if opponent == Rock {
+			you = Paper
+		} else if opponent == Paper {
+			you = Scissors
 		} else {
-			youShape = rock
+			you = Rock
 		}
 	}
 
-	return opponentShape, youShape
+	return you, opponent
 }
 
 func main() {
@@ -112,8 +98,8 @@ func main() {
 
 	for scanner.Scan() {
 		text := scanner.Text()
-		opponentShape, youShape := parseShapesUsingPart2Rules(text)
-		totalPoints += score(opponentShape, youShape)
+		you, opponent := parseShapesUsingPart2Rules(text)
+		totalPoints += score(you, opponent)
 	}
 
 	if err := scanner.Err(); err != nil {
