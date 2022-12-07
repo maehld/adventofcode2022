@@ -106,5 +106,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("You scored a total of %d points", totalPoints)
+	fmt.Printf("You scored a total of %d points\n", totalPoints)
 }

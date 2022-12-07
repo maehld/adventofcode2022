@@ -51,5 +51,5 @@ func main() {
 		topNCalories += caloriesSum
 	}
 
-	fmt.Printf("The most calories carried by the top %d elves are %d calories", n, topNCalories)
+	fmt.Printf("The most calories carried by the top %d elves are %d calories\n", n, topNCalories)
 }
